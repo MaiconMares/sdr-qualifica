@@ -2,7 +2,7 @@ class Admin::BaseController < ApplicationController
   layout "admin"
 
   before_action :require_admin
-  before_action :skip_policy_scope, only: :index
+  before_action :skip_policy_scope
 
   private
 
