@@ -2,7 +2,9 @@ class Admin::BaseController < ApplicationController
   layout "admin"
 
   before_action :require_admin
-  before_action :skip_policy_scope
+
+  skip_after_action :verify_authorized, raise: false
+  skip_after_action :verify_policy_scoped, raise: false
 
   private
 
