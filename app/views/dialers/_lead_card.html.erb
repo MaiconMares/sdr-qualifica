@@ -1,0 +1,99 @@
+<% if lead.present? %>
+  <div class="text-center">
+    <!-- Lead Information -->
+    <div class="bg-white/10 rounded-xl p-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+        <div>
+          <div class="text-white/60 text-sm mb-1">Empresa</div>
+          <div class="text-white text-xl font-semibold"><%= lead.company_name %></div>
+        </div>
+        <div>
+          <div class="text-white/60 text-sm mb-1">Contato</div>
+          <div class="text-white text-xl font-semibold"><%= lead.contact_name %></div>
+        </div>
+        <div>
+          <div class="text-white/60 text-sm mb-1">Telefone</div>
+          <div class="text-white text-lg"><%= lead.phone %></div>
+        </div>
+        <div>
+          <div class="text-white/60 text-sm mb-1">Email</div>
+          <div class="text-white text-lg"><%= lead.email %></div>
+        </div>
+        <div>
+          <div class="text-white/60 text-sm mb-1">Cidade/Estado</div>
+          <div class="text-white text-lg"><%= "#{lead.city} - #{lead.state}" %></div>
+        </div>
+        <div>
+          <div class="text-white/60 text-sm mb-1">Faixa de Faturamento</div>
+          <div class="text-white text-lg"><%= lead.revenue_range&.name || "N/A" %></div>
+        </div>
+      </div>
+      
+      <% if lead.notes.present? %>
+        <div class="mt-4 pt-4 border-t border-white/20">
+          <div class="text-white/60 text-sm mb-1">Observações</div>
+          <div class="text-white"><%= lead.notes %></div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Action Buttons -->
+    <% if call_session.present? %>
+      <!-- Call in progress - show end call options -->
+      <div class="bg-white/10 rounded-xl p-6">
+        <h3 class="text-white text-lg font-semibold mb-4">Encerrar Chamada</h3>
+        
+        <%= form_with url: end_call_dialer_path, method: :post, data: { turbo_stream: true }, local: true do |f| %>
+          <%= hidden_field_tag :lead_id, lead.id %>
+          
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+            <button type="submit" name="status" value="sem_contato" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+              Sem Contato
+            </button>
+            <button type="submit" name="status" value="tentativa" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+              Tentativa
+            </button>
+            <button type="submit" name="status" value="remarcado" class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+              Remarcado
+            </button>
+            <button type="submit" name="status" value="agendado" class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+              Agendado
+            </button>
+            <button type="submit" name="status" value="desqualificado" class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+              Desqualificado
+            </button>
+            <button type="submit" name="status" value="excluido" class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+              Excluído
+            </button>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-white/70 text-sm mb-2">Descrição (opcional)</label>
+            <%= text_area_tag :description, nil, rows: 3, class: "w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Adicione observações sobre esta chamada..." %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Call not started - show start call button -->
+      <div class="bg-white/10 rounded-xl p-6">
+        <%= button_to 
+          start_call_dialer_path(lead_id: lead.id),
+          method: :post,
+          data: { turbo_stream: true },
+          class: "w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl text-lg"
+        do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+          </svg>
+          <span>Iniciar Chamada</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <!-- No leads in queue -->
+  <div class="text-center py-16">
+    <div class="text-white/60 text-xl mb-4">Não há leads na fila</div>
+    <div class="text-white/40">Aguarde novos leads serem atribuídos</div>
+  </div>
+<% end %>

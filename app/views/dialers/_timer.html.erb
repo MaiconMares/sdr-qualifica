@@ -1,0 +1,7 @@
+<div class="bg-white/20 rounded-xl px-6 py-4 min-w-[200px]" data-controller="timer" data-timer-url-value="<%= timer_state_dialer_path %>" data-timer-work-session-id-value="<%= work_session&.id %>">
+  <div class="text-white/70 text-sm font-medium">Tempo de Trabalho</div>
+  <div class="text-white text-3xl font-bold font-mono" data-timer-target="display">00:00:00</div>
+  <div class="text-white/50 text-xs mt-1" data-timer-target="status">
+    <%= work_session&.paused? ? "Pausado" : (work_session&.active? ? "Em andamento" : "Aguardando") %>
+  </div>
+</div>
