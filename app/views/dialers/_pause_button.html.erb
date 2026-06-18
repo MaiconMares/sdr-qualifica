@@ -45,11 +45,10 @@
         >
           Cancelar
         </button>
-        <%= button_to 
-          "Confirmar Pausa",
+        <%= button_to "Confirmar Pausa",
           pause_dialer_path,
           method: :post,
-          data: { 
+          data: {
             turbo_stream: true,
             action: "click->pause-modal#submit"
           },
