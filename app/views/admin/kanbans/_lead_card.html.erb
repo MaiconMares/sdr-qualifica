@@ -1,0 +1,32 @@
+<div id="lead_<%= lead.id %>"
+     class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:shadow-sm hover:border-slate-300 transition-all kanban-card"
+     data-lead-id="<%= lead.id %>"
+     data-kanban-target="card"
+     draggable="true">
+
+  <%# Avatar + Name + Company %>
+  <div class="flex items-start gap-3 mb-3">
+    <div class="w-9 h-9 <%= user_avatar_color(lead.id) %> rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+      <%= user_initials(lead.contact_name.presence || lead.company_name) %>
+    </div>
+    <div class="min-w-0 flex-1">
+      <div class="font-semibold text-slate-900 text-sm leading-tight truncate">
+        <%= lead.contact_name.presence || "—" %>
+      </div>
+      <div class="text-slate-400 text-xs truncate mt-0.5"><%= lead.company_name %></div>
+    </div>
+  </div>
+
+  <%# Revenue Range Badge %>
+  <% if lead.revenue_range %>
+    <span class="inline-flex items-center bg-amber-50 text-amber-700 border border-amber-200 text-xs font-medium px-2.5 py-0.5 rounded-full mb-3">
+      <%= lead.revenue_range.name %>
+    </span>
+  <% end %>
+
+  <%# Phone + Time %>
+  <div class="flex items-center justify-between text-xs text-slate-400">
+    <span><%= lead.phone.presence || "—" %></span>
+    <span><%= time_ago_pt(lead.updated_at) %></span>
+  </div>
+</div>

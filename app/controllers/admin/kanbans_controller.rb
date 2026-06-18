@@ -39,7 +39,7 @@ class Admin::KanbansController < Admin::BaseController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             "lead_#{lead.id}",
-            partial: "admin/kanban/lead_card",
+            partial: "admin/kanbans/lead_card",
             locals: { lead: lead.reload }
           )
         end

@@ -1,0 +1,82 @@
+<%# Page Header %>
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-green-700">Kanban de Leads</h1>
+  <p class="text-slate-500 text-sm mt-1">
+    Cada ligação registrada move o lead automaticamente para a coluna do resultado.
+  </p>
+</div>
+
+<%# Filters Bar %>
+<div class="flex items-center justify-between mb-6 gap-4">
+  <div class="flex items-center gap-3 flex-1">
+    <%= form_with url: admin_kanban_path, method: :get, local: true, class: "flex items-center gap-3 flex-1" do |f| %>
+      <%# Search %>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+        <%= f.search_field :q, value: params[:q],
+              class: "pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm w-64",
+              placeholder: "Buscar lead ou empresa..." %>
+      </div>
+
+      <%# SDR Filter %>
+      <div class="relative">
+        <%= f.select :sdr_id,
+              options_for_select([["Todos os SDRs", ""]] + @sdrs.map { |s| [s.name, s.id] }, params[:sdr_id]),
+              {},
+              class: "appearance-none bg-white border border-slate-200 rounded-lg pl-4 pr-9 py-2.5 text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" %>
+        <div class="pointer-events-none absolute inset-y-0 right-0 pr-3 flex items-center">
+          <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+      </div>
+
+      <%= f.submit "Filtrar", class: "hidden" %>
+    <% end %>
+  </div>
+
+  <%# Lead Count & Updated At %>
+  <p class="text-slate-400 text-sm flex-shrink-0">
+    <span class="font-medium text-slate-600"><%= @total_leads %> leads</span>
+    · atualizado <%= time_ago_pt(@loaded_at) %>
+  </p>
+</div>
+
+<%# Kanban Board %>
+<div class="flex gap-4 overflow-x-auto pb-4 -mx-8 px-8" data-controller="kanban">
+  <% @columns.each do |status| %>
+    <% cfg   = kanban_status_config(status) %>
+    <% leads = @leads_by_status[status] || [] %>
+
+    <div class="flex-none w-72 bg-white rounded-xl border border-slate-200 border-t-[3px] <%= cfg[:border] %> flex flex-col">
+      <%# Column Header %>
+      <div class="px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full <%= cfg[:dot] %>"></span>
+          <span class="font-semibold text-slate-800 text-sm"><%= cfg[:label] %></span>
+        </div>
+        <span class="bg-slate-100 text-slate-500 text-xs font-semibold px-2 py-0.5 rounded-full">
+          <%= leads.count %>
+        </span>
+      </div>
+
+      <%# Lead Cards %>
+      <div class="px-3 pb-3 flex flex-col gap-2.5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]
+                  kanban-column" data-status="<%= status %>" data-kanban-target="column">
+        <% leads.each do |lead| %>
+          <%= render "admin/kanbans/lead_card", lead: lead %>
+        <% end %>
+        <% if leads.empty? %>
+          <div class="flex items-center justify-center py-8 text-slate-300 text-sm">
+            Sem leads
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
