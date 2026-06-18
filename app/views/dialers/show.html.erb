@@ -1,27 +1,19 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
-  <div class="container mx-auto px-4 py-8">
-    <!-- Header Section -->
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-6 border border-white/20">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-          <div id="queue_counter">
-            <%= render "queue_counter", count: @queue_count %>
-          </div>
-          <div id="timer_section">
-            <%= render "timer", work_session: @work_session %>
-          </div>
-        </div>
-        <div id="pause_button">
-          <%= render @active_pause ? "resume_button" : "pause_button", pause_reasons: @pause_reasons %>
-        </div>
-      </div>
-    </div>
+<%# Stats Row %>
+<div class="flex items-center gap-4 mb-6">
+  <div id="queue_counter">
+    <%= render "queue_counter", count: @queue_count %>
+  </div>
+  <div id="timer_section" class="flex-1">
+    <%= render "timer", work_session: @work_session %>
+  </div>
+  <div id="pause_button">
+    <%= render @active_pause ? "resume_button" : "pause_button", pause_reasons: @pause_reasons %>
+  </div>
+</div>
 
-    <!-- Main Content -->
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 min-h-[500px]">
-      <div id="dialer_card">
-        <%= render "lead_card", lead: @current_lead, call_session: nil %>
-      </div>
-    </div>
+<%# Main Content %>
+<div class="bg-white rounded-xl border border-slate-200 min-h-[500px]">
+  <div id="dialer_card">
+    <%= render "lead_card", lead: @current_lead, call_session: nil %>
   </div>
 </div>

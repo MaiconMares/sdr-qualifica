@@ -1,4 +1,6 @@
 class DialersController < ApplicationController
+  layout "sdr"
+
   skip_after_action :verify_policy_scoped, raise: false
   skip_after_action :verify_authorized, raise: false
 

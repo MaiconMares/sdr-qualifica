@@ -1,87 +1,94 @@
 <% if lead.present? %>
-  <div class="text-center">
-    <!-- Lead Information -->
-    <div class="bg-white/10 rounded-xl p-6 mb-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+  <div class="p-8">
+    <%# Lead Info %>
+    <div class="mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <div class="text-white/60 text-sm mb-1">Empresa</div>
-          <div class="text-white text-xl font-semibold"><%= lead.company_name %></div>
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Empresa</div>
+          <div class="text-slate-900 text-lg font-semibold"><%= lead.company_name %></div>
         </div>
         <div>
-          <div class="text-white/60 text-sm mb-1">Contato</div>
-          <div class="text-white text-xl font-semibold"><%= lead.contact_name %></div>
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Contato</div>
+          <div class="text-slate-900 text-lg font-semibold"><%= lead.contact_name %></div>
         </div>
         <div>
-          <div class="text-white/60 text-sm mb-1">Telefone</div>
-          <div class="text-white text-lg"><%= lead.phone %></div>
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Telefone</div>
+          <div class="text-slate-800 text-base"><%= lead.phone %></div>
         </div>
         <div>
-          <div class="text-white/60 text-sm mb-1">Email</div>
-          <div class="text-white text-lg"><%= lead.email %></div>
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Email</div>
+          <div class="text-slate-800 text-base"><%= lead.email %></div>
         </div>
         <div>
-          <div class="text-white/60 text-sm mb-1">Cidade/Estado</div>
-          <div class="text-white text-lg"><%= "#{lead.city} - #{lead.state}" %></div>
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Cidade/Estado</div>
+          <div class="text-slate-800 text-base"><%= "#{lead.city} - #{lead.state}" %></div>
         </div>
         <div>
-          <div class="text-white/60 text-sm mb-1">Faixa de Faturamento</div>
-          <div class="text-white text-lg"><%= lead.revenue_range&.name || "N/A" %></div>
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Faixa de Faturamento</div>
+          <div class="text-slate-800 text-base"><%= lead.revenue_range&.name || "N/A" %></div>
         </div>
       </div>
-      
+
       <% if lead.notes.present? %>
-        <div class="mt-4 pt-4 border-t border-white/20">
-          <div class="text-white/60 text-sm mb-1">Observações</div>
-          <div class="text-white"><%= lead.notes %></div>
+        <div class="mt-4 pt-4 border-t border-slate-100">
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Observações</div>
+          <div class="text-slate-700 text-sm"><%= lead.notes %></div>
         </div>
       <% end %>
     </div>
 
-    <!-- Action Buttons -->
+    <%# Action Buttons %>
     <% if call_session.present? %>
-      <!-- Call in progress - show end call options -->
-      <div class="bg-white/10 rounded-xl p-6">
-        <h3 class="text-white text-lg font-semibold mb-4">Encerrar Chamada</h3>
-        
-        <%= form_with url: end_call_dialer_path, method: :post, data: { turbo_stream: true }, local: true do |f| %>
+      <div class="bg-slate-50 rounded-xl border border-slate-200 p-6">
+        <h3 class="text-slate-800 text-base font-semibold mb-4">Encerrar Chamada</h3>
+
+        <%= form_with url: end_call_dialer_path, method: :post,
+              data: { turbo_stream: true }, local: true do |f| %>
           <%= hidden_field_tag :lead_id, lead.id %>
-          
+
           <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-            <button type="submit" name="status" value="sem_contato" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button type="submit" name="status" value="sem_contato"
+              class="bg-slate-500 hover:bg-slate-600 text-white font-medium py-3 px-4 rounded-lg text-sm transition-colors">
               Sem Contato
             </button>
-            <button type="submit" name="status" value="tentativa" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button type="submit" name="status" value="tentativa"
+              class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg text-sm transition-colors">
               Tentativa
             </button>
-            <button type="submit" name="status" value="remarcado" class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button type="submit" name="status" value="remarcado"
+              class="bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-4 rounded-lg text-sm transition-colors">
               Remarcado
             </button>
-            <button type="submit" name="status" value="agendado" class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button type="submit" name="status" value="agendado"
+              class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg text-sm transition-colors">
               Agendado
             </button>
-            <button type="submit" name="status" value="desqualificado" class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button type="submit" name="status" value="desqualificado"
+              class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg text-sm transition-colors">
               Desqualificado
             </button>
-            <button type="submit" name="status" value="excluido" class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button type="submit" name="status" value="excluido"
+              class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg text-sm transition-colors">
               Excluído
             </button>
           </div>
-          
-          <div class="mb-4">
-            <label class="block text-white/70 text-sm mb-2">Descrição (opcional)</label>
-            <%= text_area_tag :description, nil, rows: 3, class: "w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Adicione observações sobre esta chamada..." %>
+
+          <div>
+            <label class="block text-slate-600 text-sm font-medium mb-1">Descrição (opcional)</label>
+            <%= text_area_tag :description, nil, rows: 3,
+                  class: "w-full px-4 py-2 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-green-500 focus:border-transparent",
+                  placeholder: "Adicione observações sobre esta chamada..." %>
           </div>
         <% end %>
       </div>
     <% else %>
-      <!-- Call not started - show start call button -->
-      <div class="bg-white/10 rounded-xl p-6">
+      <div class="text-center py-4">
         <%= button_to start_call_dialer_path(lead_id: lead.id),
           method: :post,
           data: { turbo_stream: true },
-          class: "w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl text-lg" do %>
+          class: "inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-10 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl text-lg" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
           </svg>
           <span>Iniciar Chamada</span>
         <% end %>
@@ -89,9 +96,20 @@
     <% end %>
   </div>
 <% else %>
-  <!-- No leads in queue -->
-  <div class="text-center py-16">
-    <div class="text-white/60 text-xl mb-4">Não há leads na fila</div>
-    <div class="text-white/40">Aguarde novos leads serem atribuídos</div>
+  <%# Empty state %>
+  <div class="flex flex-col items-center justify-center py-24 px-8 text-center">
+    <div class="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mb-6">
+      <svg class="w-10 h-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"/>
+      </svg>
+    </div>
+    <h2 class="text-xl font-bold text-slate-800 mb-2">Não há leads na fila</h2>
+    <p class="text-slate-400 text-sm max-w-xs mb-6">
+      Aguarde novos leads serem atribuídos pelo administrador para iniciar sua sessão de discagem.
+    </p>
+    <span class="inline-flex items-center gap-2 bg-green-50 text-green-700 border border-green-200 text-sm font-medium px-4 py-2 rounded-full">
+      <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+      Aguardando atribuição de leads
+    </span>
   </div>
 <% end %>
