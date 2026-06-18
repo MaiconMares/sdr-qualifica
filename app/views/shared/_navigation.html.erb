@@ -1,0 +1,40 @@
+<nav class="bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 border-b border-white/10">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex items-center space-x-8">
+        <%= link_to root_path, class: "text-white font-bold text-xl" do %>
+          SDR Qualifica
+        <% end %>
+
+        <!-- Navigation Links -->
+        <div class="hidden md:flex space-x-4">
+          <% if current_user.admin? %>
+            <%= link_to "Dashboard", admin_root_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+            <%= link_to "Usuários", admin_users_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+            <%= link_to "Leads", admin_leads_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+            <%= link_to "Importar", admin_imports_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+            <%= link_to "Kanban", admin_kanban_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+            <%= link_to "Relatórios", admin_reports_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+            <%= link_to "Logs", admin_audit_logs_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+          <% elsif current_user.sdr? %>
+            <%= link_to "Dialer", dialer_path, class: "text-white/70 hover:text-white px-3 py-2 rounded-lg transition-colors" %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- User Menu -->
+      <div class="flex items-center space-x-4">
+        <div class="text-white">
+          <span class="text-white/60 text-sm">Olá,</span>
+          <span class="font-medium"><%= current_user.name %></span>
+          <span class="ml-2 px-2 py-1 rounded-full text-xs <%= current_user.admin? ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300' %>">
+            <%= current_user.role.upcase %>
+          </span>
+        </div>
+        <%= button_to "Sair", destroy_user_session_path, method: :delete, 
+            class: "bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium" %>
+      </div>
+    </div>
+  </div>
+</nav>
