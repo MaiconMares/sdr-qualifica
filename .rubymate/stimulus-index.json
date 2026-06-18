@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "indexedAt": 1781195853691,
+  "controllers": {
+    "hello": {
+      "filePath": "/home/maicon_mares/Desktop/Gestão Fitness/sdr_qualifica/app/javascript/controllers/hello_controller.js",
+      "targets": [],
+      "values": [],
+      "outlets": [],
+      "actions": [],
+      "classes": [],
+      "mtime": 1781114188915.1838
+    },
+    "timer": {
+      "filePath": "/home/maicon_mares/Desktop/Gestão Fitness/sdr_qualifica/app/javascript/controllers/timer_controller.js",
+      "targets": [
+        "display",
+        "status"
+      ],
+      "values": [
+        {
+          "name": "url",
+          "type": "String"
+        },
+        {
+          "name": "workSessionId",
+          "type": "String"
+        }
+      ],
+      "outlets": [],
+      "actions": [
+        {
+          "name": "startPolling",
+          "line": 16
+        },
+        {
+          "name": "stopPolling",
+          "line": 22
+        },
+        {
+          "name": "if",
+          "line": 23
+        },
+        {
+          "name": "fetchTimerState",
+          "line": 28
+        },
+        {
+          "name": "if",
+          "line": 33
+        },
+        {
+          "name": "if",
+          "line": 37
+        },
+        {
+          "name": "updateTimer",
+          "line": 45
+        },
+        {
+          "name": "formatTime",
+          "line": 50
+        },
+        {
+          "name": "getStatusText",
+          "line": 62
+        }
+      ],
+      "classes": [],
+      "mtime": 1781195848578.5205
+    },
+    "kanban": {
+      "filePath": "/home/maicon_mares/Desktop/Gestão Fitness/sdr_qualifica/app/javascript/controllers/kanban_controller.js",
+      "targets": [
+        "card",
+        "column"
+      ],
+      "values": [],
+      "outlets": [],
+      "actions": [
+        {
+          "name": "setupDragAndDrop",
+          "line": 10
+        },
+        {
+          "name": "handleDragStart",
+          "line": 23
+        },
+        {
+          "name": "handleDragEnd",
+          "line": 29
+        },
+        {
+          "name": "handleDragOver",
+          "line": 36
+        },
+        {
+          "name": "handleDragLeave",
+          "line": 42
+        },
+        {
+          "name": "handleDrop",
+          "line": 46
+        },
+        {
+          "name": "if",
+          "line": 69
+        }
+      ],
+      "classes": [],
+      "mtime": 1781195852286.507
+    },
+    "pause-modal": {
+      "filePath": "/home/maicon_mares/Desktop/Gestão Fitness/sdr_qualifica/app/javascript/controllers/pause_modal_controller.js",
+      "targets": [
+        "modal"
+      ],
+      "values": [],
+      "outlets": [],
+      "actions": [
+        {
+          "name": "open",
+          "line": 6
+        },
+        {
+          "name": "close",
+          "line": 10
+        },
+        {
+          "name": "selectReason",
+          "line": 14
+        },
+        {
+          "name": "if",
+          "line": 16
+        },
+        {
+          "name": "submit",
+          "line": 23
+        }
+      ],
+      "classes": [],
+      "mtime": 1781195853297.5034
+    }
+  }
+}
