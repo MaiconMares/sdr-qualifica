@@ -1,0 +1,36 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-white mb-2">Nova Faixa de Faturamento</h1>
+      <p class="text-white/70">Adicione uma nova faixa de faturamento</p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 max-w-2xl">
+      <%= form_with model: [:admin, @revenue_range], local: true do |f| %>
+        <div class="space-y-6">
+          <div>
+            <%= f.label :name, "Nome", class: "block text-white/70 text-sm font-medium mb-2" %>
+            <%= f.text_field :name, class: "w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Ex: 0-100k" %>
+          </div>
+
+          <div>
+            <%= f.label :min_value, "Valor Mínimo (R$)", class: "block text-white/70 text-sm font-medium mb-2" %>
+            <%= f.number_field :min_value, class: "w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "0", min: 0, step: 0.01 %>
+          </div>
+
+          <div>
+            <%= f.label :max_value, "Valor Máximo (R$)", class: "block text-white/70 text-sm font-medium mb-2" %>
+            <%= f.number_field :max_value, class: "w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Deixe em branco para sem limite", min: 0, step: 0.01 %>
+          </div>
+
+          <div class="flex space-x-4 pt-4">
+            <%= f.submit "Criar Faixa", class: "flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl transition-colors" %>
+            <%= link_to "Cancelar", admin_revenue_ranges_path, class: "flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-3 px-6 rounded-xl transition-colors text-center" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

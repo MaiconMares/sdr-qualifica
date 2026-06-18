@@ -1,0 +1,43 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-white mb-2"><%= @revenue_range.name %></h1>
+        <p class="text-white/70">Detalhes da faixa de faturamento</p>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to "Editar", edit_admin_revenue_range_path(@revenue_range), class: "bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors" %>
+        <%= link_to "Voltar", admin_revenue_ranges_path, class: "bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors" %>
+      </div>
+    </div>
+
+    <!-- Details -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+        <div class="text-white/60 text-sm font-medium mb-2">Nome</div>
+        <div class="text-white text-2xl font-bold"><%= @revenue_range.name %></div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+        <div class="text-white/60 text-sm font-medium mb-2">Valor Mínimo</div>
+        <div class="text-white text-2xl font-bold"><%= number_to_currency(@revenue_range.min_value, unit: "R$", separator: ",", delimiter: ".") %></div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+        <div class="text-white/60 text-sm font-medium mb-2">Valor Máximo</div>
+        <div class="text-white text-2xl font-bold"><%= @revenue_range.max_value ? number_to_currency(@revenue_range.max_value, unit: "R$", separator: ",", delimiter: ".") : "Sem limite" %></div>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+        <div class="text-white/60 text-sm font-medium mb-2">Total de Leads</div>
+        <div class="text-white text-3xl font-bold"><%= @leads_count %></div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+        <div class="text-white/60 text-sm font-medium mb-2">Duração Média de Chamada</div>
+        <div class="text-white text-3xl font-bold"><%= format_duration(@average_call_duration) %></div>
+      </div>
+    </div>
+  </div>
+</div>
