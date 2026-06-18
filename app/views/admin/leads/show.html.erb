@@ -1,0 +1,169 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-white mb-2"><%= @lead.company_name %></h1>
+        <p class="text-white/70"><%= @lead.contact_name %> • <%= @lead.phone %></p>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to "Voltar", admin_leads_path, class: "bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl transition-colors" %>
+      </div>
+    </div>
+
+    <!-- Lead Details -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="lg:col-span-2 bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+        <h2 class="text-xl font-bold text-white mb-4">Informações do Lead</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <div class="text-white/60 text-sm mb-1">Empresa</div>
+            <div class="text-white font-medium"><%= @lead.company_name %></div>
+          </div>
+          <div>
+            <div class="text-white/60 text-sm mb-1">Contato</div>
+            <div class="text-white font-medium"><%= @lead.contact_name %></div>
+          </div>
+          <div>
+            <div class="text-white/60 text-sm mb-1">Telefone</div>
+            <div class="text-white font-medium"><%= @lead.phone %></div>
+          </div>
+          <div>
+            <div class="text-white/60 text-sm mb-1">Email</div>
+            <div class="text-white font-medium"><%= @lead.email %></div>
+          </div>
+          <div>
+            <div class="text-white/60 text-sm mb-1">Cidade</div>
+            <div class="text-white font-medium"><%= @lead.city %></div>
+          </div>
+          <div>
+            <div class="text-white/60 text-sm mb-1">Estado</div>
+            <div class="text-white font-medium"><%= @lead.state %></div>
+          </div>
+          <div>
+            <div class="text-white/60 text-sm mb-1">Faixa de Faturamento</div>
+            <div class="text-white font-medium"><%= @lead.revenue_range&.name || "-" %></div>
+          </div>
+          <div>
+            <div class="text-white/60 text-sm mb-1">Status</div>
+            <div class="font-medium">
+              <span class="px-3 py-1 rounded-full text-sm <%= lead_status_class(@lead.status) %>">
+                <%= @lead.status.humanize %>
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <% if @lead.notes.present? %>
+          <div class="mt-4 pt-4 border-t border-white/10">
+            <div class="text-white/60 text-sm mb-1">Observações</div>
+            <div class="text-white"><%= @lead.notes %></div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Assignment & Actions -->
+      <div class="space-y-6">
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+          <h2 class="text-xl font-bold text-white mb-4">Atribuição</h2>
+          <div class="mb-4">
+            <div class="text-white/60 text-sm mb-1">SDR Atual</div>
+            <div class="text-white font-medium"><%= @lead.current_sdr&.name || "Não atribuído" %></div>
+          </div>
+          
+          <%= form_with url: reassign_admin_lead_path(@lead), method: :patch, local: true do |f| %>
+            <div class="mb-4">
+              <label class="block text-white/70 text-sm font-medium mb-2">Reatribuir para</label>
+              <select name="user_id" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="">Selecione um SDR</option>
+                <% User.active_sdrs.each do |sdr| %>
+                  <option value="<%= sdr.id %>"><%= sdr.name %></option>
+                <% end %>
+              </select>
+            </div>
+            <%= f.submit "Reatribuir", class: "w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl transition-colors" %>
+          <% end %>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+          <h2 class="text-xl font-bold text-white mb-4">Alterar Status</h2>
+          <%= form_with model: [:admin, @lead], local: true do |f| %>
+            <div class="mb-4">
+              <label class="block text-white/70 text-sm font-medium mb-2">Novo Status</label>
+              <select name="lead[status]" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <% Lead.statuses.each do |status| %>
+                  <option value="<%= status %>" <%= @lead.status == status ? 'selected' : '' %>><%= status.humanize %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-white/70 text-sm font-medium mb-2">Observações</label>
+              <%= f.text_area :notes, rows: 3, class: "w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent", placeholder: "Adicione observações..." %>
+            </div>
+            <%= f.submit "Atualizar Status", class: "w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-xl transition-colors" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status History -->
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 mb-8">
+      <h2 class="text-xl font-bold text-white mb-4">Histórico de Status</h2>
+      <div class="space-y-3">
+        <% @status_history.each do |history| %>
+          <div class="flex items-center justify-between py-3 border-b border-white/10 last:border-0">
+            <div class="flex items-center space-x-4">
+              <div class="bg-white/10 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-white font-medium">
+                  <%= history.previous_status&.humanize || "Novo" %> → <%= history.new_status.humanize %>
+                </div>
+                <div class="text-white/50 text-sm">
+                  <%= history.changed_by&.name || "Sistema" %> • <%= l(history.created_at, format: :short) %>
+                </div>
+              </div>
+            </div>
+            <% if history.description.present? %>
+              <div class="text-white/70 text-sm max-w-md"><%= history.description %></div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Call Sessions -->
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+      <h2 class="text-xl font-bold text-white mb-4">Chamadas</h2>
+      <div class="space-y-3">
+        <% @call_sessions.each do |call| %>
+          <div class="flex items-center justify-between py-3 border-b border-white/10 last:border-0">
+            <div class="flex items-center space-x-4">
+              <div class="bg-white/10 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-white font-medium">
+                  <%= l(call.started_at, format: :short) %> - <%= call.ended_at ? l(call.ended_at, format: :short) : "Em andamento" %>
+                </div>
+                <div class="text-white/50 text-sm">
+                  <%= call.user&.name || "Sistema" %> • Duração: <%= call.duration_seconds ? format_duration(call.duration_seconds) : "-" %>
+                </div>
+              </div>
+            </div>
+            <div>
+              <span class="px-3 py-1 rounded-full text-sm font-medium <%= call.status == 'finished' ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300' %>">
+                <%= call.status.humanize %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
