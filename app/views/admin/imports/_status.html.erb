@@ -1,0 +1,12 @@
+<% if import.in_progress? %>
+  <div class="flex items-center space-x-2">
+    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
+    <span class="text-white/70 text-sm">Processando: <%= import.progress %>%</span>
+  </div>
+<% elsif import.completed? %>
+  <span class="text-green-400 text-sm">Concluído</span>
+<% elsif import.failed? %>
+  <span class="text-red-400 text-sm">Falhou</span>
+<% else %>
+  <span class="text-yellow-400 text-sm">Pendente</span>
+<% end %>

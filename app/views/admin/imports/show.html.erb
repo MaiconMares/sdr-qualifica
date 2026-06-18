@@ -1,0 +1,85 @@
+<%# Page Header %>
+<div class="flex items-start justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-green-600"><%= @import.filename %></h1>
+    <p class="text-slate-500 text-sm mt-1">Detalhes da importação</p>
+  </div>
+  <%= link_to "← Voltar", admin_imports_path,
+        class: "flex items-center gap-2 px-4 py-2.5 border border-slate-200 text-slate-600 text-sm font-medium rounded-lg hover:bg-slate-50 transition-colors flex-shrink-0" %>
+</div>
+
+<%# Stats Cards %>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="bg-white rounded-xl border border-slate-200 p-5">
+    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Status</div>
+    <div class="text-sm font-semibold">
+      <span class="px-2.5 py-1 rounded-full
+        <%= @import.status.to_s == 'completed' ? 'bg-green-100 text-green-700' :
+            @import.status.to_s == 'processing' ? 'bg-blue-100 text-blue-700' :
+            @import.status.to_s == 'failed' ? 'bg-red-100 text-red-700' :
+            'bg-amber-100 text-amber-700' %>">
+        <%= @import.status.to_s.upcase %>
+      </span>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl border border-slate-200 p-5">
+    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Total de Linhas</div>
+    <div class="text-3xl font-bold text-slate-900"><%= @import.total_rows || "—" %></div>
+  </div>
+  <div class="bg-white rounded-xl border border-slate-200 p-5">
+    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Processadas</div>
+    <div class="text-3xl font-bold text-slate-900"><%= @import.processed_rows || "—" %></div>
+  </div>
+  <div class="bg-white rounded-xl border border-slate-200 p-5">
+    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Com Erro</div>
+    <div class="text-3xl font-bold text-red-500"><%= @import.failed_rows || "—" %></div>
+  </div>
+</div>
+
+<%# Error Message %>
+<% if @import.error_message.present? %>
+  <div class="bg-red-50 border border-red-200 rounded-xl p-5 mb-6">
+    <h3 class="text-red-700 font-semibold mb-1.5">Erro na importação</h3>
+    <p class="text-red-600 text-sm"><%= @import.error_message %></p>
+  </div>
+<% end %>
+
+<%# Progress Bar %>
+<% if @import.total_rows.present? %>
+  <div class="bg-white rounded-xl border border-slate-200 p-5 mb-6">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-slate-600 text-sm font-medium">Progresso</span>
+      <span class="text-slate-900 font-semibold text-sm"><%= @import.progress %>%</span>
+    </div>
+    <div class="w-full bg-slate-100 rounded-full h-2.5">
+      <div class="bg-green-500 h-2.5 rounded-full transition-all duration-300"
+           style="width: <%= @import.progress %>%"
+           data-import-progress></div>
+    </div>
+  </div>
+<% end %>
+
+<%# Details Card %>
+<div class="bg-white rounded-xl border border-slate-200 p-6">
+  <h2 class="font-bold text-slate-900 mb-4">Detalhes</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div>
+      <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Importado por</div>
+      <div class="text-slate-800 text-sm font-medium"><%= @import.user&.name || "Sistema" %></div>
+    </div>
+    <div>
+      <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Data de Criação</div>
+      <div class="text-slate-800 text-sm font-medium"><%= l(@import.created_at, format: :long) %></div>
+    </div>
+    <% if @import.completed_at %>
+      <div>
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Concluído em</div>
+        <div class="text-slate-800 text-sm font-medium"><%= l(@import.completed_at, format: :long) %></div>
+      </div>
+      <div>
+        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Duração</div>
+        <div class="text-slate-800 text-sm font-medium"><%= distance_of_time_in_words(@import.created_at, @import.completed_at) %></div>
+      </div>
+    <% end %>
+  </div>
+</div>
