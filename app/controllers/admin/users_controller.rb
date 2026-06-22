@@ -2,7 +2,7 @@ class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: %i[show edit update activate deactivate]
 
   def index
-    authorize :admin_user, :index?
+    authorize User, :index?
     @users = User.order(:name)
     @pagy, @users = pagy(@users, items: 20)
   end
