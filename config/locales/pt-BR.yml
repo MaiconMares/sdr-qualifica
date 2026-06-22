@@ -1,0 +1,273 @@
+pt-BR:
+  hello: "Olá mundo"
+
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d/%m"
+      long: "%d de %B de %Y"
+    day_names:
+      - domingo
+      - segunda-feira
+      - terça-feira
+      - quarta-feira
+      - quinta-feira
+      - sexta-feira
+      - sábado
+    abbr_day_names:
+      - dom
+      - seg
+      - ter
+      - qua
+      - qui
+      - sex
+      - sáb
+    month_names:
+      - ~
+      - janeiro
+      - fevereiro
+      - março
+      - abril
+      - maio
+      - junho
+      - julho
+      - agosto
+      - setembro
+      - outubro
+      - novembro
+      - dezembro
+    abbr_month_names:
+      - ~
+      - jan.
+      - fev.
+      - mar.
+      - abr.
+      - mai.
+      - jun.
+      - jul.
+      - ago.
+      - set.
+      - out.
+      - nov.
+      - dez.
+    order:
+      - :day
+      - :month
+      - :year
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M:%S"
+      short: "%d/%m %H:%M"
+      long: "%d de %B de %Y às %H:%M"
+    am: ""
+    pm: ""
+
+  datetime:
+    distance_in_words:
+      half_a_minute: "meio minuto"
+      less_than_x_seconds:
+        one: "menos de 1 segundo"
+        other: "menos de %{count} segundos"
+      x_seconds:
+        one: "1 segundo"
+        other: "%{count} segundos"
+      less_than_x_minutes:
+        one: "menos de 1 minuto"
+        other: "menos de %{count} minutos"
+      x_minutes:
+        one: "1 minuto"
+        other: "%{count} minutos"
+      about_x_hours:
+        one: "cerca de 1 hora"
+        other: "cerca de %{count} horas"
+      x_days:
+        one: "1 dia"
+        other: "%{count} dias"
+      about_x_months:
+        one: "cerca de 1 mês"
+        other: "cerca de %{count} meses"
+      x_months:
+        one: "1 mês"
+        other: "%{count} meses"
+      about_x_years:
+        one: "cerca de 1 ano"
+        other: "cerca de %{count} anos"
+      over_x_years:
+        one: "mais de 1 ano"
+        other: "mais de %{count} anos"
+      almost_x_years:
+        one: "quase 1 ano"
+        other: "quase %{count} anos"
+    prompts:
+      second: "Segundo"
+      minute: "Minuto"
+      hour: "Hora"
+      day: "Dia"
+      month: "Mês"
+      year: "Ano"
+
+  number:
+    format:
+      separator: ","
+      delimiter: "."
+      precision: 3
+      significant: false
+      strip_insignificant_zeros: false
+    currency:
+      format:
+        format: "%u%n"
+        unit: "R$"
+        separator: ","
+        delimiter: "."
+        precision: 2
+    percentage:
+      format:
+        delimiter: "."
+        separator: ","
+    precision:
+      format:
+        delimiter: "."
+        separator: ","
+    human:
+      format:
+        delimiter: "."
+        separator: ","
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: "Byte"
+            other: "Bytes"
+          kb: "KB"
+          mb: "MB"
+          gb: "GB"
+          tb: "TB"
+          pb: "PB"
+          eb: "EB"
+      decimal_units:
+        format: "%n %u"
+        units:
+          unit: ""
+          thousand: "Mil"
+          million: "Milhão"
+          billion: "Bilhão"
+          trillion: "Trilhão"
+          quadrillion: "Quadrilhão"
+
+  activerecord:
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        inclusion: "não está incluído na lista"
+        exclusion: "está reservado"
+        invalid: "não é válido"
+        confirmation: "não é igual a %{attribute}"
+        accepted: "deve ser aceito"
+        empty: "não pode ficar vazio"
+        blank: "não pode ficar em branco"
+        present: "deve ficar em branco"
+        too_long:
+          one: "é muito longo (máximo: 1 caractere)"
+          other: "é muito longo (máximo: %{count} caracteres)"
+        too_short:
+          one: "é muito curto (mínimo: 1 caractere)"
+          other: "é muito curto (mínimo: %{count} caracteres)"
+        wrong_length:
+          one: "não possui o tamanho esperado (1 caractere)"
+          other: "não possui o tamanho esperado (%{count} caracteres)"
+        not_a_number: "não é um número"
+        not_an_integer: "não é um número inteiro"
+        greater_than: "deve ser maior que %{count}"
+        greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+        equal_to: "deve ser igual a %{count}"
+        less_than: "deve ser menor que %{count}"
+        less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+        other_than: "deve ser diferente de %{count}"
+        odd: "deve ser ímpar"
+        even: "deve ser par"
+        taken: "já está em uso"
+        record_invalid: "A validação falhou: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "Não é possível excluir o registro pois existe um %{record} dependente"
+          has_many: "Não é possível excluir o registro pois existem %{record} dependentes"
+      template:
+        header:
+          one: "Não foi possível salvar %{model}: 1 erro"
+          other: "Não foi possível salvar %{model}: %{count} erros"
+        body: "Por favor, verifique os seguintes campos:"
+    models:
+      user: "Usuário"
+      lead: "Lead"
+      import: "Importação"
+      audit_log: "Log de Auditoria"
+      revenue_range: "Faixa de Receita"
+    attributes:
+      user:
+        name: "Nome"
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmação de senha"
+        role: "Perfil"
+      lead:
+        name: "Nome"
+        phone: "Telefone"
+        email: "E-mail"
+        status: "Status"
+      import:
+        file: "Arquivo"
+        status: "Status"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: "deve ser aceito"
+      blank: "não pode ficar em branco"
+      present: "deve ficar em branco"
+      confirmation: "não é igual a %{attribute}"
+      empty: "não pode ficar vazio"
+      equal_to: "deve ser igual a %{count}"
+      even: "deve ser par"
+      exclusion: "está reservado"
+      greater_than: "deve ser maior que %{count}"
+      greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+      inclusion: "não está incluído na lista"
+      invalid: "não é válido"
+      less_than: "deve ser menor que %{count}"
+      less_than_or_equal_to: "deve ser menor ou igual a %{count}"
+      model_invalid: "Validação falhou: %{errors}"
+      not_a_number: "não é um número"
+      not_an_integer: "não é um número inteiro"
+      odd: "deve ser ímpar"
+      other_than: "deve ser diferente de %{count}"
+      required: "é obrigatório"
+      taken: "já está em uso"
+      too_long:
+        one: "é muito longo (máximo: 1 caractere)"
+        other: "é muito longo (máximo: %{count} caracteres)"
+      too_short:
+        one: "é muito curto (mínimo: 1 caractere)"
+        other: "é muito curto (mínimo: %{count} caracteres)"
+      wrong_length:
+        one: "não possui o tamanho esperado (1 caractere)"
+        other: "não possui o tamanho esperado (%{count} caracteres)"
+      not_saved:
+        one: "1 erro impediu que %{resource} fosse salvo:"
+        other: "%{count} erros impediram que %{resource} fosse salvo:"
+
+  helpers:
+    select:
+      prompt: "Por favor, selecione"
+    submit:
+      create: "Criar %{model}"
+      update: "Atualizar %{model}"
+      submit: "Salvar %{model}"
+
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " e "
+      last_word_connector: " e "
