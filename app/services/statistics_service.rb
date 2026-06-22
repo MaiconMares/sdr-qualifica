@@ -116,6 +116,15 @@ class StatisticsService
 
   # Class methods for export functionality
   class << self
+    def user_statistics(user)
+      {
+        total_calls: user.call_sessions.finished.count,
+        average_call_duration: user.call_sessions.finished.average(:duration_seconds).to_i,
+        total_pause_duration: user.pauses.where.not(duration_seconds: nil).sum(:duration_seconds).to_i,
+        pending_leads: user.pending_leads_count
+      }
+    end
+
     def overall_statistics
       {
         total_calls: CallSession.finished.count,
