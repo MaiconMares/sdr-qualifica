@@ -81,8 +81,24 @@ module ApplicationHelper
     end
   end
 
+  def call_status_label(status)
+    {
+      "in_progress" => "Em andamento",
+      "completed"   => "Concluída",
+      "abandoned"   => "Abandonada"
+    }[status.to_s] || status.to_s.humanize
+  end
+
   def audit_action_class(action)
     case action.to_s
+    when 'login'
+      'bg-green-500/20 text-green-300'
+    when 'logout'
+      'bg-slate-500/20 text-slate-300'
+    when 'pause_started'
+      'bg-orange-500/20 text-orange-300'
+    when 'pause_ended'
+      'bg-green-500/20 text-green-300'
     when 'call_started'
       'bg-green-500/20 text-green-300'
     when 'call_ended'
@@ -93,10 +109,18 @@ module ApplicationHelper
       'bg-purple-500/20 text-purple-300'
     when 'lead_assigned'
       'bg-yellow-500/20 text-yellow-300'
-    when 'pause'
-      'bg-orange-500/20 text-orange-300'
-    when 'resume'
+    when 'lead_redistributed'
+      'bg-cyan-500/20 text-cyan-300'
+    when 'work_session_start'
+      'bg-teal-500/20 text-teal-300'
+    when 'work_session_end'
+      'bg-slate-500/20 text-slate-300'
+    when 'user_created'
       'bg-green-500/20 text-green-300'
+    when 'user_updated'
+      'bg-blue-500/20 text-blue-300'
+    when 'user_deactivated'
+      'bg-red-500/20 text-red-300'
     else
       'bg-gray-500/20 text-gray-300'
     end

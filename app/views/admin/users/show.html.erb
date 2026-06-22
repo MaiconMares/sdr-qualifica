@@ -39,7 +39,7 @@
         <% @user.audit_logs.order(created_at: :desc).limit(10).each do |log| %>
           <div class="flex items-center justify-between py-3 border-b border-white/10 last:border-0">
             <div>
-              <div class="text-white font-medium"><%= log.action.to_s.humanize %></div>
+              <div class="text-white font-medium"><%= log.action_label %></div>
               <div class="text-white/50 text-sm"><%= time_ago_in_words(log.created_at) %> atrás</div>
             </div>
           </div>

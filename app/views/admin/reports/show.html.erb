@@ -97,7 +97,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <% @statistics[:leads_by_status].each do |status, count| %>
           <div class="bg-white/5 rounded-xl p-4">
-            <div class="text-white/60 text-sm mb-1"><%= status.humanize %></div>
+            <div class="text-white/60 text-sm mb-1"><%= kanban_status_config(status)[:label] %></div>
             <div class="text-white text-2xl font-bold"><%= count %></div>
             <div class="text-white/50 text-sm mt-1">
               <%= ((count.to_f / @statistics[:leads_by_status].values.sum) * 100).round(1) %>%

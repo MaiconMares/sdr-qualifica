@@ -48,7 +48,7 @@
             <div class="text-white/60 text-sm mb-1">Status</div>
             <div class="font-medium">
               <span class="px-3 py-1 rounded-full text-sm <%= lead_status_class(@lead.status) %>">
-                <%= @lead.status.humanize %>
+                <%= kanban_status_config(@lead.status)[:label] %>
               </span>
             </div>
           </div>
@@ -92,7 +92,7 @@
               <label class="block text-white/70 text-sm font-medium mb-2">Novo Status</label>
               <select name="lead[status]" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <% Lead.statuses.each do |status| %>
-                  <option value="<%= status %>" <%= @lead.status == status ? 'selected' : '' %>><%= status.humanize %></option>
+                  <option value="<%= status %>" <%= @lead.status == status ? 'selected' : '' %>><%= kanban_status_config(status)[:label] %></option>
                 <% end %>
               </select>
             </div>
@@ -120,7 +120,7 @@
               </div>
               <div>
                 <div class="text-white font-medium">
-                  <%= history.previous_status&.humanize || "Novo" %> → <%= history.new_status.humanize %>
+                  <%= history.previous_status ? kanban_status_config(history.previous_status)[:label] : "Novo" %> → <%= kanban_status_config(history.new_status)[:label] %>
                 </div>
                 <div class="text-white/50 text-sm">
                   <%= history.changed_by&.name || "Sistema" %> • <%= l(history.created_at, format: :short) %>
@@ -158,7 +158,7 @@
             </div>
             <div>
               <span class="px-3 py-1 rounded-full text-sm font-medium <%= call.status == 'finished' ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300' %>">
-                <%= call.status.humanize %>
+                <%= call_status_label(call.status) %>
               </span>
             </div>
           </div>
