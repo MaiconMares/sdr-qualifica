@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   before_action :authenticate_user!
-  before_action :check_session_timeout
+  before_action :check_session_timeout, unless: :devise_controller?
   before_action :set_current_user_for_audit
 
   after_action :verify_authorized, except: :index, unless: :skip_authorization?
@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
     last_seen = session[:last_seen_at]
 
     if last_seen && (Time.current - Time.parse(last_seen.to_s)) > timeout_minutes.minutes
+      session.delete(:last_seen_at)
       sign_out current_user
       redirect_to new_user_session_path, alert: "Sua sessão expirou. Por favor, faça login novamente."
       return
