@@ -25,7 +25,7 @@ gem "roo-xls", "~> 1.2"
 gem "view_component"
 
 # Pagination
-gem "pagy", "~> 9.0"
+gem "pagy", "~> 43.5"
 
 # State machine
 gem "statesman", "~> 12.0"
