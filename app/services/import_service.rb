@@ -17,6 +17,8 @@ class ImportService < ApplicationService
     "telefone"        => :phone,
     "celular"         => :phone,
     "email"           => :email,
+    "e-mail"          => :email,
+    "e_mail"          => :email,
     "city"            => :city,
     "cidade"          => :city,
     "state"           => :state,
