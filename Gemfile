@@ -28,7 +28,7 @@ gem "view_component"
 gem "pagy", "~> 9.0"
 
 # State machine
-gem "statesman", "~> 12.0"
+gem "statesman", "~> 13.1"
 
 # Serialization / CSV
 gem "csv"
