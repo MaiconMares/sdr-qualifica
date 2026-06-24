@@ -19,7 +19,7 @@ gem "solid_queue"
 
 # File imports
 gem "roo", "~> 2.10"
-gem "roo-xls", "~> 1.2"
+gem "roo-xls", "~> 2.0"
 
 # ViewComponent
 gem "view_component"
