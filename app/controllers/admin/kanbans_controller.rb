@@ -3,7 +3,7 @@ class Admin::KanbansController < Admin::BaseController
   def show
     authorize :admin_kanban, :show?
 
-    @leads = Lead.includes(:revenue_range, current_assignment: :user).order(updated_at: :desc)
+    @leads = Lead.includes(:revenue_range, active_assignment: :user).order(updated_at: :desc)
 
     @leads = @leads.where(status: params[:status]) if params[:status].present?
     @leads = @leads.joins(:lead_assignments).where(lead_assignments: { user_id: params[:sdr_id] }) if params[:sdr_id].present?
