@@ -13,7 +13,8 @@ class KanbanMovementService < ApplicationService
     previous_status = @lead.status
 
     @lead.transaction do
-      @lead.update!(status: @new_status)
+      # update_columns bypasses model validations — Kanban allows free movement between any columns
+      @lead.update_columns(status: Lead.statuses[@new_status], updated_at: Time.current)
       
       LeadStatusHistory.create!(
         lead: @lead,
@@ -33,7 +34,7 @@ class KanbanMovementService < ApplicationService
     end
 
     success
-  rescue ActiveRecord::RecordInvalid => e
+  rescue ActiveRecord::ActiveRecordError => e
     failure(e.message)
   end
 
