@@ -60,7 +60,8 @@
           <span class="w-2 h-2 rounded-full <%= cfg[:dot] %>"></span>
           <span class="font-semibold text-slate-800 text-sm"><%= cfg[:label] %></span>
         </div>
-        <span class="bg-slate-100 text-slate-500 text-xs font-semibold px-2 py-0.5 rounded-full">
+        <span id="column_count_<%= status %>"
+              class="bg-slate-100 text-slate-500 text-xs font-semibold px-2 py-0.5 rounded-full">
           <%= leads.count %>
         </span>
       </div>
@@ -72,7 +73,7 @@
           <%= render "admin/kanbans/lead_card", lead: lead %>
         <% end %>
         <% if leads.empty? %>
-          <div class="flex items-center justify-center py-8 text-slate-300 text-sm">
+          <div class="kanban-empty flex items-center justify-center py-8 text-slate-300 text-sm">
             Sem leads
           </div>
         <% end %>

@@ -51,7 +51,7 @@ class Lead < ApplicationRecord
   def valid_status_transition
     previous = status_before_last_save&.to_sym || status_was&.to_sym
     return unless previous
-    return if can_transition_to?(status.to_sym)
-    errors.add(:status, "transição inválida de #{previous} para #{status}")
+    allowed = VALID_TRANSITIONS[previous] || []
+    errors.add(:status, "transição inválida de #{previous} para #{status}") unless allowed.include?(status.to_sym)
   end
 end

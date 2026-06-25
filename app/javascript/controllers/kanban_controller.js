@@ -1,84 +1,100 @@
 import { Controller } from "@hotwired/stimulus"
+import Sortable from "sortablejs"
 
 export default class extends Controller {
-  static targets = ["card", "column"]
+  static targets = ["column"]
 
   connect() {
-    this.setupDragAndDrop()
+    this.sortables = this.columnTargets.map(column => this.makeSortable(column))
   }
 
-  setupDragAndDrop() {
-    this.cardTargets.forEach(card => {
-      card.addEventListener('dragstart', this.handleDragStart.bind(this))
-      card.addEventListener('dragend', this.handleDragEnd.bind(this))
-    })
-
-    this.columnTargets.forEach(column => {
-      column.addEventListener('dragover', this.handleDragOver.bind(this))
-      column.addEventListener('dragleave', this.handleDragLeave.bind(this))
-      column.addEventListener('drop', this.handleDrop.bind(this))
-    })
+  disconnect() {
+    this.sortables.forEach(s => s.destroy())
   }
 
-  handleDragStart(event) {
-    event.target.classList.add('opacity-50')
-    event.dataTransfer.setData('text/plain', event.target.dataset.leadId)
-    event.dataTransfer.effectAllowed = 'move'
-  }
-
-  handleDragEnd(event) {
-    event.target.classList.remove('opacity-50')
-    this.columnTargets.forEach(column => {
-      column.classList.remove('bg-white/20')
+  makeSortable(column) {
+    return new Sortable(column, {
+      group:     "kanban",
+      animation: 150,
+      ghostClass: "opacity-40",
+      dragClass:  "scale-95",
+      onEnd: (evt) => this.handleMoved(evt)
     })
   }
 
-  handleDragOver(event) {
-    event.preventDefault()
-    event.dataTransfer.dropEffect = 'move'
-    event.currentTarget.classList.add('bg-white/20')
-  }
+  async handleMoved(evt) {
+    if (evt.from === evt.to) return
 
-  handleDragLeave(event) {
-    event.currentTarget.classList.remove('bg-white/20')
-  }
-
-  async handleDrop(event) {
-    event.preventDefault()
-    event.currentTarget.classList.remove('bg-white/20')
-
-    const leadId = event.dataTransfer.getData('text/plain')
-    const newStatus = event.currentTarget.dataset.status
+    const leadId   = evt.item.dataset.leadId
+    const newStatus = evt.to.dataset.status
+    const oldStatus = evt.from.dataset.status
 
     if (!leadId || !newStatus) return
 
+    this.syncColumnUI(evt.from, oldStatus)
+    this.syncColumnUI(evt.to, newStatus)
+
     try {
-      const response = await fetch(`/admin/kanban/move`, {
-        method: 'POST',
+      const response = await fetch("/admin/kanban/move", {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': this.getMetaValue('csrf-token'),
-          'Accept': 'text/vnd.turbo-stream.html'
+          "Content-Type": "application/json",
+          "X-CSRF-Token": this.csrfToken,
+          "Accept": "text/vnd.turbo-stream.html"
         },
-        body: JSON.stringify({
-          lead_id: leadId,
-          new_status: newStatus
-        })
+        body: JSON.stringify({ lead_id: leadId, new_status: newStatus })
       })
 
       if (response.ok) {
-        const turboStream = await response.text()
-        Turbo.renderStreamMessage(turboStream)
+        const html = await response.text()
+        Turbo.renderStreamMessage(html)
       } else {
-        console.error('Failed to move lead')
+        // Revert: move card back and restore counts
+        evt.from.insertBefore(evt.item, evt.from.children[evt.oldIndex] || null)
+        this.syncColumnUI(evt.from, oldStatus)
+        this.syncColumnUI(evt.to, newStatus)
+        this.flashError(evt.item)
       }
-    } catch (error) {
-      console.error('Error moving lead:', error)
+    } catch (_err) {
+      evt.from.insertBefore(evt.item, evt.from.children[evt.oldIndex] || null)
+      this.syncColumnUI(evt.from, oldStatus)
+      this.syncColumnUI(evt.to, newStatus)
+      this.flashError(evt.item)
     }
   }
 
-  getMetaValue(name) {
-    const element = document.head.querySelector(`meta[name="${name}"]`)
-    return element ? element.getAttribute('content') : null
+  syncColumnUI(column, status) {
+    this.syncCount(column, status)
+    this.syncEmptyState(column)
+  }
+
+  syncCount(column, status) {
+    const countEl = document.getElementById(`column_count_${status}`)
+    if (!countEl) return
+    const cards = column.querySelectorAll("[data-lead-id]").length
+    countEl.textContent = cards
+  }
+
+  syncEmptyState(column) {
+    const hasCards = column.querySelector("[data-lead-id]") !== null
+    let placeholder = column.querySelector(".kanban-empty")
+
+    if (hasCards) {
+      placeholder?.remove()
+    } else if (!placeholder) {
+      placeholder = document.createElement("div")
+      placeholder.className = "kanban-empty flex items-center justify-center py-8 text-slate-300 text-sm"
+      placeholder.textContent = "Sem leads"
+      column.appendChild(placeholder)
+    }
+  }
+
+  flashError(card) {
+    card.classList.add("ring-2", "ring-red-400")
+    setTimeout(() => card.classList.remove("ring-2", "ring-red-400"), 2000)
+  }
+
+  get csrfToken() {
+    return document.querySelector("meta[name='csrf-token']")?.content
   }
 }
